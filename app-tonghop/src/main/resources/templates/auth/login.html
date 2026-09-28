@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Đăng nhập - Bài tập Web 9')}"></head>
+<body style="background-color: #f1f5f9;">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+
+    <main class="d-flex align-items-center justify-content-center py-5">
+        <div class="card p-4 shadow" style="width: 100%; max-width: 440px; border-radius: 16px;">
+            <div class="text-center mb-4">
+                <div class="d-inline-flex p-3 bg-primary-subtle text-primary rounded-circle mb-2">
+                    <i class="bi bi-shield-lock-fill fs-3"></i>
+                </div>
+                <h3 class="fw-bold text-dark mb-1">Đăng nhập</h3>
+                <p class="text-muted small">Truy cập hệ thống quản trị & ứng dụng</p>
+            </div>
+
+            <!-- Thông báo thành công / lỗi -->
+            <div th:if="${errorMessage}" class="alert alert-danger py-2 small" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-1"></i> <span th:text="${errorMessage}"></span>
+            </div>
+            <div th:if="${logoutMessage}" class="alert alert-info py-2 small" role="alert">
+                <i class="bi bi-info-circle-fill me-1"></i> <span th:text="${logoutMessage}"></span>
+            </div>
+            <div th:if="${successMessage}" class="alert alert-success py-2 small" role="alert">
+                <i class="bi bi-check-circle-fill me-1"></i> <span th:text="${successMessage}"></span>
+            </div>
+
+            <form th:action="@{/login}" method="post">
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Tên đăng nhập hoặc Email</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
+                        <input type="text" name="username" class="form-control" placeholder="admin hoặc user" required autofocus>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <label class="form-label small fw-semibold mb-0">Mật khẩu</label>
+                        <a href="/forgot-password" class="small text-decoration-none text-primary">Quên mật khẩu?</a>
+                    </div>
+                    <div class="input-group mt-1">
+                        <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
+                        <input type="password" name="password" class="form-control" placeholder="123456" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold mb-3">
+                    <i class="bi bi-box-arrow-in-right me-1"></i> Đăng nhập
+                </button>
+            </form>
+
+            <div class="text-center pt-3 border-top">
+                <span class="text-muted small">Chưa có tài khoản?</span>
+                <a href="/register" class="small fw-bold text-decoration-none ms-1">Đăng ký ngay</a>
+            </div>
+
+            <div class="alert alert-light border mt-4 mb-0 small">
+                <strong class="text-dark"><i class="bi bi-info-circle me-1"></i>Tài khoản dùng thử:</strong>
+                <ul class="mb-0 ps-3 mt-1">
+                    <li>Quản trị: <code>admin</code> / <code>123456</code></li>
+                    <li>Người dùng: <code>user</code> / <code>123456</code></li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+    <div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

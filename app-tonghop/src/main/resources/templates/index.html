@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Trang chủ - Ứng dụng Thực hành Tổng hợp')}"></head>
+<body>
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="py-5 text-white" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);">
+            <div class="container text-center py-4">
+                <span class="badge bg-warning text-dark px-3 py-2 mb-3 fw-semibold shadow-sm">
+                    <i class="bi bi-shield-check me-1"></i> SPRING SECURITY 6 & SPRING BOOT 3
+                </span>
+                <h1 class="display-5 fw-bold mb-3">Ứng dụng Quản lý & Xác thực Toàn diện</h1>
+                <p class="lead text-white-50 mx-auto mb-4" style="max-width: 750px;">
+                    Triển khai đầy đủ Authentication, Authorization, Đăng ký xác thực OTP qua Email, Đặt lại mật khẩu,
+                    Quản lý User & Product với phân quyền chặt chẽ, MapStruct, Cloudinary và SQL Server.
+                </p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="/products" class="btn btn-warning btn-lg px-4 fw-semibold text-dark">
+                        <i class="bi bi-box-seam me-1"></i> Khám phá sản phẩm
+                    </a>
+                    <div sec:authorize="isAnonymous()">
+                        <a href="/register" class="btn btn-outline-light btn-lg px-4">
+                            <i class="bi bi-person-plus me-1"></i> Đăng ký tài khoản
+                        </a>
+                    </div>
+                    <div sec:authorize="isAuthenticated()">
+                        <a href="/dashboard" class="btn btn-outline-light btn-lg px-4">
+                            <i class="bi bi-speedometer2 me-1"></i> Vào Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Thống kê & Giới thiệu nhanh -->
+        <div class="container my-5">
+            <!-- Flash Message Alerts -->
+            <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i> <span th:text="${successMessage}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i> <span th:text="${errorMessage}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div th:if="${infoMessage}" class="alert alert-info alert-dismissible fade show" role="alert">
+                <i class="bi bi-info-circle-fill me-2"></i> <span th:text="${infoMessage}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <!-- Thẻ thống kê -->
+            <div class="row g-4 mb-5">
+                <div class="col-md-4">
+                    <div class="card p-4 border-start border-4 border-primary">
+                        <div class="d-flex align-items-center">
+                            <div class="p-3 bg-primary-subtle text-primary rounded-circle me-3">
+                                <i class="bi bi-people-fill fs-3"></i>
+                            </div>
+                            <div>
+                                <h3 class="fw-bold mb-0" th:text="${totalUsers}">3</h3>
+                                <div class="text-muted">Người dùng trong CSDL</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card p-4 border-start border-4 border-success">
+                        <div class="d-flex align-items-center">
+                            <div class="p-3 bg-success-subtle text-success rounded-circle me-3">
+                                <i class="bi bi-box-seam-fill fs-3"></i>
+                            </div>
+                            <div>
+                                <h3 class="fw-bold mb-0" th:text="${totalProducts}">4</h3>
+                                <div class="text-muted">Sản phẩm đang lưu hành</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card p-4 border-start border-4 border-warning">
+                        <div class="d-flex align-items-center">
+                            <div class="p-3 bg-warning-subtle text-warning rounded-circle me-3">
+                                <i class="bi bi-shield-lock-fill fs-3"></i>
+                            </div>
+                            <div>
+                                <h3 class="fw-bold mb-0 text-success">Hoạt động</h3>
+                                <div class="text-muted">Bảo mật Session + CSRF</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sản phẩm mới nhất -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h3 class="fw-bold mb-0"><i class="bi bi-fire text-danger me-2"></i>Sản phẩm mới nhất</h3>
+                    <p class="text-muted small mb-0">Các mặt hàng vừa được người dùng đăng tải</p>
+                </div>
+                <a href="/products" class="btn btn-outline-primary btn-sm">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+            </div>
+
+            <div class="row g-4 mb-5" th:if="${recentProducts != null && recentProducts.content.size() > 0}">
+                <div class="col-lg-3 col-md-6" th:each="p : ${recentProducts.content}">
+                    <div class="card h-100 overflow-hidden">
+                        <img th:if="${p.imageUrl != null && !p.imageUrl.isEmpty()}" th:src="${p.imageUrl}" class="card-img-top" style="height: 180px; object-fit: cover;" alt="Product Image">
+                        <div th:unless="${p.imageUrl != null && !p.imageUrl.isEmpty()}" class="bg-secondary-subtle d-flex align-items-center justify-content-center" style="height: 180px;">
+                            <i class="bi bi-image text-muted fs-1"></i>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold text-truncate" th:text="${p.name}"></h5>
+                            <h6 class="text-danger fw-bold mb-2" th:text="${#numbers.formatDecimal(p.price, 0, 'POINT', 0, 'COMMA') + ' đ'}"></h6>
+                            <p class="card-text text-muted small flex-grow-1" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;" th:text="${p.description}"></p>
+                            <div class="pt-2 border-top d-flex justify-content-between align-items-center small text-muted">
+                                <span><i class="bi bi-person me-1"></i><span th:text="${p.userUsername}"></span></span>
+                                <a th:href="@{'/products/' + ${p.id}}" class="btn btn-sm btn-primary">Chi tiết</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bảng tài khoản Demo Local -->
+            <div class="card p-4 border-0 shadow-sm bg-white">
+                <h5 class="fw-bold text-primary mb-3"><i class="bi bi-key-fill me-2"></i>Tài khoản Demo Local có sẵn trong SQL Server</h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Tên đăng nhập</th>
+                                <th>Email</th>
+                                <th>Mật khẩu</th>
+                                <th>Vai trò</th>
+                                <th>Quyền hạn & Ghi chú</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>admin</strong></td>
+                                <td><code>admin@iotstar.vn</code></td>
+                                <td><code>123456</code></td>
+                                <td><span class="badge bg-danger">ROLE_ADMIN</span></td>
+                                <td>Toàn quyền quản lý người dùng, sửa/xóa mọi sản phẩm</td>
+                            </tr>
+                            <tr>
+                                <td><strong>user</strong></td>
+                                <td><code>user@iotstar.vn</code></td>
+                                <td><code>123456</code></td>
+                                <td><span class="badge bg-primary">ROLE_USER</span></td>
+                                <td>Chỉ được thêm/sửa/xóa sản phẩm của chính mình</td>
+                            </tr>
+                            <tr>
+                                <td><strong>user2</strong></td>
+                                <td><code>user2@iotstar.vn</code></td>
+                                <td><code>123456</code></td>
+                                <td><span class="badge bg-primary">ROLE_USER</span></td>
+                                <td>Dùng để test kiểm tra quyền sửa sản phẩm của user khác</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+    <div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

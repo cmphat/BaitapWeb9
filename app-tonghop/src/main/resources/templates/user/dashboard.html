@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('User Dashboard - Bài tập Web 9')}"></head>
+<body>
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+
+    <main class="container py-5">
+        <div class="row g-4">
+            <!-- Cột trái: Hồ sơ cá nhân -->
+            <div class="col-lg-4">
+                <div class="card p-4 text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-person-circle text-primary" style="font-size: 5rem;"></i>
+                    </div>
+                    <h4 class="fw-bold mb-1" sec:authentication="name"></h4>
+                    <p class="text-muted small mb-2">Người dùng hệ thống</p>
+                    <div>
+                        <span class="badge bg-primary px-3 py-2" sec:authentication="principal.authorities"></span>
+                    </div>
+                    <hr class="my-4">
+                    <div class="text-start small">
+                        <div class="d-flex justify-content-between py-1 border-bottom">
+                            <span class="text-muted">Trạng thái:</span>
+                            <span class="badge bg-success">Đã kích hoạt</span>
+                        </div>
+                        <div class="d-flex justify-content-between py-1 border-bottom">
+                            <span class="text-muted">Cơ chế xác thực:</span>
+                            <span class="text-dark fw-semibold">Spring Security Session</span>
+                        </div>
+                        <div class="d-flex justify-content-between py-1">
+                            <span class="text-muted">Quyền hạn:</span>
+                            <span class="text-dark fw-semibold">Quản lý sản phẩm cá nhân</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cột phải: Hoạt động và hành động -->
+            <div class="col-lg-8">
+                <div class="card p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="fw-bold text-primary mb-0"><i class="bi bi-speedometer2 me-2"></i>Không gian làm việc</h4>
+                        <a href="/products/new" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle me-1"></i> Đăng sản phẩm mới</a>
+                    </div>
+                    <div class="alert alert-info py-3">
+                        <h6 class="alert-heading fw-bold mb-1"><i class="bi bi-shield-check me-1"></i>Phân quyền tài khoản (ROLE_USER)</h6>
+                        <p class="mb-0 small">
+                            Hệ thống kiểm tra quyền sở hữu tại backend: Bạn có toàn quyền xem, thêm sản phẩm mới và chỉ được phép chỉnh sửa hoặc xóa các sản phẩm do chính bạn đăng bán.
+                        </p>
+                    </div>
+
+                    <h5 class="fw-bold mt-4 mb-3">Tiện ích nhanh:</h5>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="card bg-light p-3 h-100">
+                                <h6 class="fw-bold text-dark"><i class="bi bi-box-seam text-warning me-2"></i>Danh sách sản phẩm</h6>
+                                <p class="text-muted small mb-3">Xem danh sách tất cả các mặt hàng hiện có trên hệ thống.</p>
+                                <a href="/products" class="btn btn-sm btn-outline-primary mt-auto">Xem sản phẩm</a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-light p-3 h-100">
+                                <h6 class="fw-bold text-dark"><i class="bi bi-cloud-arrow-up text-success me-2"></i>Upload sản phẩm & Ảnh</h6>
+                                <p class="text-muted small mb-3">Tải lên hình ảnh sản phẩm được đồng bộ hóa với Cloudinary.</p>
+                                <a href="/products/new" class="btn btn-sm btn-outline-success mt-auto">Thêm sản phẩm</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+    <div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

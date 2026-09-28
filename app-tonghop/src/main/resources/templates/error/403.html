@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('403 - Quyền truy cập bị từ chối')}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+
+    <main class="container d-flex align-items-center justify-content-center py-5 flex-grow-1">
+        <div class="card p-5 text-center shadow-sm" style="max-width: 550px; border-radius: 16px;">
+            <div class="text-danger mb-3">
+                <i class="bi bi-shield-lock-fill" style="font-size: 5rem;"></i>
+            </div>
+            <h1 class="display-5 fw-bold text-danger">403</h1>
+            <h4 class="fw-bold text-dark mb-2">Quyền truy cập bị từ chối! (Access Denied)</h4>
+            <p class="text-muted mb-4">
+                Tài khoản <strong sec:authorize="isAuthenticated()"><span sec:authentication="name"></span></strong>
+                <span sec:authorize="isAnonymous()">của bạn</span> không có thẩm quyền truy cập tài nguyên này.
+                Nếu bạn đang cố gắng chỉnh sửa sản phẩm của người khác hoặc truy cập khu vực quản trị viên, hành động đã bị chặn bởi hệ thống kiểm soát quyền backend.
+            </p>
+            <div class="d-flex justify-content-center gap-2">
+                <a href="/" class="btn btn-primary"><i class="bi bi-house me-1"></i> Trang chủ</a>
+                <a href="/products" class="btn btn-outline-secondary"><i class="bi bi-box-seam me-1"></i> Danh sách sản phẩm</a>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+    <div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

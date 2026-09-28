@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Lỗi hệ thống - Bài tập Web 9')}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+
+    <main class="container d-flex align-items-center justify-content-center py-5 flex-grow-1">
+        <div class="card p-5 text-center shadow-sm" style="max-width: 500px; border-radius: 16px;">
+            <div class="text-warning mb-3">
+                <i class="bi bi-exclamation-triangle-fill" style="font-size: 4rem;"></i>
+            </div>
+            <h3 class="fw-bold text-dark mb-2">Đã có lỗi xảy ra</h3>
+            <p class="text-muted mb-4">
+                Hệ thống gặp sự cố trong quá trình xử lý yêu cầu của bạn. Vui lòng thử lại sau hoặc quay lại trang chủ.
+            </p>
+            <div>
+                <a href="/" class="btn btn-primary"><i class="bi bi-house me-1"></i> Quay về trang chủ</a>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+    <div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

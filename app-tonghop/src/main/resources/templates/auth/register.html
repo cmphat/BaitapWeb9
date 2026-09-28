@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Đăng ký tài khoản - Bài tập Web 9')}"></head>
+<body style="background-color: #f1f5f9;">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+
+    <main class="d-flex align-items-center justify-content-center py-5">
+        <div class="card p-4 shadow" style="width: 100%; max-width: 480px; border-radius: 16px;">
+            <div class="text-center mb-4">
+                <div class="d-inline-flex p-3 bg-success-subtle text-success rounded-circle mb-2">
+                    <i class="bi bi-person-plus-fill fs-3"></i>
+                </div>
+                <h3 class="fw-bold text-dark mb-1">Đăng ký tài khoản</h3>
+                <p class="text-muted small">Tài khoản sẽ được kích hoạt thông qua mã OTP Email</p>
+            </div>
+
+            <div th:if="${errorMessage}" class="alert alert-danger py-2 small" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-1"></i> <span th:text="${errorMessage}"></span>
+            </div>
+
+            <form th:action="@{/register}" th:object="${registerDTO}" method="post">
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Tên đăng nhập (Username)</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
+                        <input type="text" th:field="*{username}" class="form-control" th:classappend="${#fields.hasErrors('username')} ? 'is-invalid' : ''" placeholder="nguyenvana" required>
+                    </div>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Email nhận mã OTP</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
+                        <input type="email" th:field="*{email}" class="form-control" th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''" placeholder="example@gmail.com" required>
+                    </div>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Mật khẩu (Tối thiểu 6 ký tự)</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
+                        <input type="password" th:field="*{password}" class="form-control" th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''" placeholder="••••••••" required>
+                    </div>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label small fw-semibold">Xác nhận lại mật khẩu</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="bi bi-shield-check"></i></span>
+                        <input type="password" th:field="*{confirmPassword}" class="form-control" th:classappend="${#fields.hasErrors('confirmPassword')} ? 'is-invalid' : ''" placeholder="••••••••" required>
+                    </div>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100 py-2 fw-semibold mb-3">
+                    <i class="bi bi-send-check me-1"></i> Đăng ký & Nhận mã OTP
+                </button>
+            </form>
+
+            <div class="text-center pt-3 border-top">
+                <span class="text-muted small">Đã có tài khoản?</span>
+                <a href="/login" class="small fw-bold text-decoration-none ms-1">Đăng nhập ngay</a>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+    <div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

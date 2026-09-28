@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head(${product.name} + ' - Chi tiết sản phẩm')}"></head>
+<body class="bg-light">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+
+    <main class="container py-5">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="/products" class="text-decoration-none">Sản phẩm</a></li>
+                <li class="breadcrumb-item active" th:text="${product.name}"></li>
+            </ol>
+        </nav>
+
+        <div class="card p-4 p-lg-5 shadow-sm border-0">
+            <div class="row g-5">
+                <!-- Cột ảnh lớn -->
+                <div class="col-lg-6">
+                    <div class="rounded-4 overflow-hidden shadow-sm" style="max-height: 450px;">
+                        <img th:if="${product.imageUrl != null && !product.imageUrl.isEmpty()}" 
+                             th:src="${product.imageUrl}" class="w-100 h-100" style="object-fit: cover;" alt="Product Image">
+                        <div th:unless="${product.imageUrl != null && !product.imageUrl.isEmpty()}" 
+                             class="bg-secondary-subtle d-flex align-items-center justify-content-center" style="height: 350px;">
+                            <i class="bi bi-image text-muted fs-1"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cột thông tin chi tiết -->
+                <div class="col-lg-6 d-flex flex-column">
+                    <h2 class="fw-bold text-dark mb-2" th:text="${product.name}"></h2>
+                    <h3 class="text-danger fw-bold mb-4" th:text="${#numbers.formatDecimal(product.price, 0, 'POINT', 0, 'COMMA') + ' VNĐ'}"></h3>
+                    
+                    <div class="card bg-light p-3 mb-4 border-0">
+                        <h6 class="fw-bold text-dark mb-2"><i class="bi bi-card-text me-1 text-primary"></i>Mô tả sản phẩm:</h6>
+                        <p class="text-muted mb-0" style="white-space: pre-line;" th:text="${product.description} ?: 'Chưa có mô tả chi tiết cho sản phẩm này.'"></p>
+                    </div>
+
+                    <div class="list-group list-group-flush mb-4 small">
+                        <div class="list-group-item d-flex justify-content-between px-0">
+                            <span class="text-muted">Người đăng bán:</span>
+                            <strong><i class="bi bi-person-fill text-primary me-1"></i><span th:text="${product.userUsername}"></span></strong>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between px-0">
+                            <span class="text-muted">Ngày đăng:</span>
+                            <span th:text="${#temporals.format(product.createdAt, 'dd/MM/yyyy HH:mm')}"></span>
+                        </div>
+                    </div>
+
+                    <!-- Nút hành động theo quyền sở hữu -->
+                    <div class="mt-auto d-flex gap-2">
+                        <a href="/products" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Quay lại</a>
+                        
+                        <div th:if="${canEdit}" class="d-flex gap-2">
+                            <a th:href="@{'/products/edit/' + ${product.id}}" class="btn btn-warning">
+                                <i class="bi bi-pencil-square me-1"></i> Sửa sản phẩm
+                            </a>
+                            <form th:action="@{'/products/delete/' + ${product.id}}" method="post" onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm này?');">
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="bi bi-trash me-1"></i> Xóa
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+    <div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

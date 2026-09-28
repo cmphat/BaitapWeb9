@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Admin Dashboard - Bài tập Web 9')}"></head>
+<body>
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+
+    <main class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <span class="badge bg-danger-subtle text-danger px-3 py-2 mb-1 rounded-pill fw-semibold">QUẢN TRỊ VIÊN</span>
+                <h2 class="h3 fw-bold text-dark">Bảng điều khiển Quản trị (Admin Dashboard)</h2>
+                <p class="text-muted mb-0">Giám sát người dùng, sản phẩm và bảo mật hệ thống toàn diện</p>
+            </div>
+            <div>
+                <a href="/admin/users" class="btn btn-primary me-2"><i class="bi bi-people-fill me-1"></i> Quản lý Người dùng</a>
+                <a href="/products/new" class="btn btn-success"><i class="bi bi-plus-circle me-1"></i> Thêm sản phẩm</a>
+            </div>
+        </div>
+
+        <!-- Thẻ thống kê số lượng -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-3">
+                <div class="card p-3 text-center border-start border-4 border-primary">
+                    <h2 class="fw-bold text-primary mb-1" th:text="${totalUsers}">3</h2>
+                    <span class="text-muted small">Tổng người dùng</span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="col-md-12">
+                    <div class="card p-3 text-center border-start border-4 border-success">
+                        <h2 class="fw-bold text-success mb-1" th:text="${totalProducts}">4</h2>
+                        <span class="text-muted small">Tổng sản phẩm</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card p-3 text-center border-start border-4 border-warning">
+                    <h2 class="fw-bold text-warning mb-1">SQL Server</h2>
+                    <span class="text-muted small">Cơ sở dữ liệu</span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card p-3 text-center border-start border-4 border-danger">
+                    <h2 class="fw-bold text-danger mb-1">Active</h2>
+                    <span class="text-muted small">Bảo mật RBAC & OTP</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Các tính năng quản trị chính -->
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card p-4 h-100">
+                    <h5 class="fw-bold text-dark mb-3"><i class="bi bi-person-gear text-primary me-2"></i>Chức năng Quản lý Người dùng</h5>
+                    <p class="text-muted small">Các quyền hạn dành riêng cho quản trị viên cấp cao:</p>
+                    <ul class="list-group list-group-flush mb-3 small">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-check2 text-success me-2"></i>Xem danh sách người dùng, tìm kiếm & phân trang</span>
+                            <span class="badge bg-success">Hoạt động</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-check2 text-success me-2"></i>Thêm tài khoản mới, cập nhật thông tin</span>
+                            <span class="badge bg-success">Hoạt động</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-check2 text-success me-2"></i>Thay đổi vai trò (ROLE_USER / ROLE_ADMIN)</span>
+                            <span class="badge bg-success">Hoạt động</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-check2 text-success me-2"></i>Bật / Tắt kích hoạt tài khoản (Enable / Disable)</span>
+                            <span class="badge bg-success">Hoạt động</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-check2 text-success me-2"></i>Xóa tài khoản khỏi CSDL</span>
+                            <span class="badge bg-success">Hoạt động</span>
+                        </li>
+                    </ul>
+                    <a href="/admin/users" class="btn btn-outline-primary btn-sm mt-auto"><i class="bi bi-arrow-right"></i> Mở trang quản trị người dùng</a>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card p-4 h-100">
+                    <h5 class="fw-bold text-dark mb-3"><i class="bi bi-boxes text-success me-2"></i>Quyền Quản lý Sản phẩm</h5>
+                    <p class="text-muted small">Quyền hạn quản lý sản phẩm trên toàn bộ hệ thống:</p>
+                    <div class="alert alert-secondary small">
+                        <i class="bi bi-shield-check text-success me-1"></i>
+                        <strong>Toàn quyền Admin:</strong> Admin có thể chỉnh sửa và xóa bất kỳ sản phẩm nào trong hệ thống, không bị giới hạn bởi quyền sở hữu người tạo.
+                    </div>
+                    <div class="d-flex gap-2 mt-auto">
+                        <a href="/products" class="btn btn-outline-secondary btn-sm"><i class="bi bi-list-ul"></i> Xem sản phẩm</a>
+                        <a href="/products/new" class="btn btn-outline-success btn-sm"><i class="bi bi-plus-lg"></i> Đăng sản phẩm mới</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+    <div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>
